@@ -111,10 +111,10 @@
       <script id="choice-template" type="text/html">
         <tr>
           <td>
-            <strong data-bind="text: score"></strong>
+            <span class="score" data-bind="css: {'score-negative': score() < 0}, css: {'score-positive': score() > 0}, text: score"></span>
           </td>
           <td>
-        <div class="voting-container" data-bind="disabled: votesByCurrentUser().length == 0">
+        <div class="voting-container" data-bind="disabled: votesByCurrentUser().length > 1">
           <div class="btn-group">
             <button tabindex="999" class="btn" data-score="100" data-bind="click: vote ">Up</button>
             <button tabindex="999" class="btn" data-score="-100" data-bind="click: vote">Down</button>

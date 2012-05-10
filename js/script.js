@@ -68,7 +68,7 @@
         for (i in self.votes()) {
           total += self.votes()[i].score;
         }
-        return total;
+        return Math.round(total / 100);
       });
 
       self.addVote = function(score, user) {
