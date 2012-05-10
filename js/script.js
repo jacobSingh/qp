@@ -6,11 +6,14 @@
   $(document).ready(function() {
     Poll = function() {
       var self = this;
-      self.title = ko.observable("What's your favorite color [Click to rename]"),
-      self.author = ko.observable(new User()),
-      self.votingTypeName = 'updown',
+      self.title = ko.observable("What's your favorite color [Click to rename]").extend({editable: true});
+      self.isEditing = ko.observable(false);
+
+      var titleLength = ko.dependentObservable(function() {
+        return self.title() ? self.title().length : 0;
+      });
+      self.author = ko.observable(new User());
       // @todo: restrtic to if author==person
-      self.editable = true,
       self.choices = ko.observableArray([new Choice()]);
 
       // This doesn't belong here, but choicePlaceholders needs it...
@@ -30,6 +33,21 @@
 
         return self.choices();
       });
+
+      self.edit = function() {
+        self.title.beginEdit();
+        self.isEditing(true);
+      }
+
+      self.update = function(){
+        self.title.commit();
+        self.isEditing(false);
+      }
+
+      self.cancel = function() {
+        self.title.rollback();
+        self.isEditing(false);
+      }
     };
 
     var Choice = function() {

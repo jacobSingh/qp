@@ -81,13 +81,25 @@
       <script src="js/libs/bootstrap/bootstrap.min.js"></script>
 
       <script src="js/libs/knockout.min.js"></script>
+      <script src="js/libs/ko.editables.js"></script>
       <script src="js/plugins.js"></script>
       <script src="js/script.js"></script>
       <!-- end scripts-->
 
 
       <script id="poll-template" type="text/html">
-        <h1 class="poll-title page-header" data-bind="css: {editable: $root.currentUser().name() == author().name()}, text: title"></h1> 
+        <div class="poll-title" data-bind="visible: !isEditing()">
+          <h1 class="poll-title page-header" data-bind="css: {editable: $root.currentUser().name() == author().name()}, text: title, click: function() { if($root.currentUser().name() == author().name()) { edit() }}"></h1>
+        </div>
+
+        <div class="title-edit" data-bind="visible: isEditing()">
+          <input type="text" data-bind="value: title" />
+          <!-- Include a template for OK / Cancel -->
+          <button class="btn btn-primary" data-bind="click: update">Ok</button>
+          <button class="btn" data-bind="click: cancel">Cancel</button>
+        </div>
+
+
         <form id="choices">
         <table class="table table-striped">
           <tbody data-bind="template: {name: 'choice-template', foreach: choices()}">
